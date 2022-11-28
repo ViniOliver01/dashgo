@@ -5,12 +5,19 @@ import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 import Pagination from '../../components/Pagination';
 import Link from 'next/link';
+import { useEffect } from 'react';
 
 export default function UserList() {
    const isWideVersion = useBreakpointValue({
       base: false,
       lg: true,
    })
+
+   useEffect(()=>{
+      fetch('http://localhost:3000/api/users')
+      .then(response => response.json())
+      .then(data => console.log(data))
+   },[])
 
    return (
       <Box>
@@ -34,7 +41,6 @@ export default function UserList() {
                   <Heading size="lg" fontWeight="normal">Usuários</Heading>
                   <Link href="/users/create">
                      <Button
-                        as="a"
                         size="sm"
                         fontSize="sm"
                         colorScheme="pink"
