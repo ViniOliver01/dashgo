@@ -5,7 +5,6 @@ import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 import Pagination from '../../components/Pagination';
 import Link from 'next/link';
-import { useEffect } from 'react';
 import { useQuery } from 'react-query'
 
 interface UserProps {
@@ -35,6 +34,8 @@ export default function UserList() {
       })
 
       return users
+   }, {
+      staleTime: 1000 * 5 // 5 segundos
    })
 
    const isWideVersion = useBreakpointValue({
