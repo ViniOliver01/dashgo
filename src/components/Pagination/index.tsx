@@ -44,7 +44,7 @@ export default function Pagination({
          align="center"
       >
          <Box>
-            <strong>0</strong> - <strong>10</strong> de <strong>100</strong>
+            <strong>{(currentPage*registersPerPage)-registersPerPage}</strong> - <strong>{currentPage*registersPerPage}</strong> de <strong>{totalCountOfRegisters}</strong>
          </Box>
 
          <HStack spacing="2">
