@@ -1,5 +1,6 @@
 import { Box, Flex, Heading, Button, Icon, Table, Thead, Tr, Th, Checkbox, Tbody, Td, Text, useBreakpointValue, Spinner } from '@chakra-ui/react';
-import { RiAddLine, RiPencilLine } from 'react-icons/ri';
+import { RiAddLine } from 'react-icons/ri';
+import { IoReload } from 'react-icons/io5'
 
 import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
@@ -16,7 +17,7 @@ interface UserProps {
 
 export default function UserList() {
 
-   const { data, isLoading, error } = useQuery('users', async () => {
+   const { data, isLoading, isFetching, error, refetch } = useQuery('users', async () => {
       const response = await fetch('http://localhost:3000/api/users')
       const data = await response.json()
 
@@ -62,17 +63,34 @@ export default function UserList() {
                padding="8"
             >
                <Flex marginBottom="8" justify="space-between" align="center">
-                  <Heading size="lg" fontWeight="normal">Usuários</Heading>
-                  <Link href="/users/create">
-                     <Button
-                        size="sm"
-                        fontSize="sm"
-                        colorScheme="pink"
-                        leftIcon={<Icon as={RiAddLine} fontSize="20" />}
-                        >
-                        Criar novo
+                  <Heading size="lg" fontWeight="normal">
+                     Usuários
+                  </Heading>
+                  <Flex
+                     gap="5"
+                  >
+                    <Button
+                       size="sm"
+                       fontSize="sm"
+                       colorScheme="none"
+                       onClick={() => refetch()}
+                       >
+                        {isFetching && <Spinner size="sm"/>}
+                        {!isFetching && <Icon as={IoReload} fontSize="20" fontWeight="bold"/>}
+                        
                      </Button>
-                  </Link>
+                     <Link href="/users/create">
+                        <Button
+                           size="sm"
+                           fontSize="sm"
+                           colorScheme="pink"
+                           leftIcon={<Icon as={RiAddLine} fontSize="20" />}
+                           >
+                           Criar novo
+                        </Button>
+                     </Link>
+                  </Flex>
+
                </Flex>
                { isLoading ? (
                   <Flex justify="center">
