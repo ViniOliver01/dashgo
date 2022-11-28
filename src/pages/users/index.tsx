@@ -1,4 +1,20 @@
-import { Box, Flex, Heading, Button, Icon, Table, Thead, Tr, Th, Checkbox, Tbody, Td, Text, useBreakpointValue, Spinner } from '@chakra-ui/react';
+import { 
+   Box, 
+   Flex, 
+   Heading, 
+   Button, 
+   Icon, 
+   Table, 
+   Thead, 
+   Tr, 
+   Th, 
+   Checkbox, 
+   Tbody, 
+   Td, 
+   Text, 
+   useBreakpointValue, 
+   Spinner 
+} from '@chakra-ui/react';
 import { RiAddLine } from 'react-icons/ri';
 import { IoReload } from 'react-icons/io5'
 
@@ -6,38 +22,11 @@ import Header from '../../components/Header';
 import Sidebar from '../../components/Sidebar';
 import Pagination from '../../components/Pagination';
 import Link from 'next/link';
-import { useQuery } from 'react-query'
-
-interface UserProps {
-   createdAt: string;
-   email: string;
-   id: string;
-   name: string;
-}
+import { useUsers } from './../../services/hooks/useUsers';
 
 export default function UserList() {
 
-   const { data, isLoading, isFetching, error, refetch } = useQuery('users', async () => {
-      const response = await fetch('http://localhost:3000/api/users')
-      const data = await response.json()
-
-      const users = data.users.map((user: UserProps) => {
-         return {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            createdAt: new Date(user.createdAt).toLocaleDateString('pt-BR', {
-               day: '2-digit',
-               month:'long',
-               year: 'numeric',
-            }),
-         }
-      })
-
-      return users
-   }, {
-      staleTime: 1000 * 5 // 5 segundos
-   })
+   const { data, isLoading, isFetching, error, refetch } = useUsers()
 
    const isWideVersion = useBreakpointValue({
       base: false,
@@ -75,8 +64,8 @@ export default function UserList() {
                        colorScheme="none"
                        onClick={() => refetch()}
                        >
-                        {isFetching && <Spinner size="sm"/>}
-                        {!isFetching && <Icon as={IoReload} fontSize="20" fontWeight="bold"/>}
+                        {isFetching && !isLoading && <Spinner size="sm"/>}
+                        {!isFetching && !isLoading && <Icon as={IoReload} fontSize="20" fontWeight="bold"/>}
                         
                      </Button>
                      <Link href="/users/create">
@@ -113,7 +102,7 @@ export default function UserList() {
                            </Tr>
                         </Thead>
                         <Tbody>
-                           {data.map((user: UserProps) => {
+                           {data?.map((user) => {
                               return(
                                  <Tr key={user.id}>
                                     <Td paddingInline={["4", "4", "6"]}>
