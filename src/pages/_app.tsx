@@ -5,12 +5,11 @@ import { SidebarDrawerProvider } from '../context/SidebarDrawerContext'
 import { makeServer } from './../services/mirage/index';
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
+import { queryClient } from '../services/queryClient';
 
 if (process.env.NODE_ENV == 'development') {
   makeServer();
 }
-
-const queryClient = new QueryClient()
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
